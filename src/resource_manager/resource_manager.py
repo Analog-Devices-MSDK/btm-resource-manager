@@ -264,6 +264,10 @@ class ResourceManager:
         str
             Lockfile path
         """
+
+        if not self.resource_lock_dir:
+            return ''
+
         return os.path.join(self.resource_lock_dir, resource)
 
     def unlock_resource(self, resource: str, owner="") -> bool:
