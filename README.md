@@ -31,8 +31,9 @@ Example:
 
 ### Optional fields
 
-All fields are optional if they do not require the field. For example, a spectrum anaylzer does not need a board field. This can be left null in that case.
--- ocdports : Ports to flash on. If not specified the resource_manager will generate ports for you.
+- All fields are optional if they do not require the field. For example, a spectrum anaylzer does not need a board field. This can be left null in that case.
+
+- ocdports : Ports to flash on. If not specified the resource_manager will generate ports for you.
 
 ### Value usage
 

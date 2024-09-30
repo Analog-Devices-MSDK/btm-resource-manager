@@ -57,6 +57,7 @@ import subprocess
 from datetime import datetime
 from typing import Dict, List, Set, Tuple
 
+
 # pylint: disable=import-error
 from tabulate import tabulate
 
@@ -76,10 +77,17 @@ class ResourceManager:
         self.owner = owner
         self._add_custom_config(extra_resources)
         self._add_resources_path()
+
+        
         self.resource_lock_dir = os.environ.get(self.ENV_RESOURCE_LOCK_DIR)
+        if not self.resource_lock_dir:
+            pass
         self._add_lockdir()
 
     def _add_lockdir(self):
+        if not self.resource_lock_dir:
+            return
+        
         if not os.path.exists(self.resource_lock_dir):
             os.mkdir(self.resource_lock_dir)
 
@@ -256,6 +264,10 @@ class ResourceManager:
         str
             Lockfile path
         """
+
+        if not self.resource_lock_dir:
+            return ''
+
         return os.path.join(self.resource_lock_dir, resource)
 
     def unlock_resource(self, resource: str, owner="") -> bool:
