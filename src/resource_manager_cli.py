@@ -48,6 +48,7 @@ import os
 import sys
 from typing import Dict
 from pathlib import Path
+import json
 
 # pylint: disable=redefined-builtin
 from rich import print
@@ -86,9 +87,9 @@ def run_setup_tool():
         default=appdata_path.__str__()
     )
 
-    config['path'] = base_directory
-    config['locks'] = base_directory / 'locks'
-    config['board'] = base_directory / 'boards.json'
+    config['path'] = Path(base_directory)
+    config['locks'] = Path(base_directory) / 'locks'
+    config['board'] = Path(base_directory) / 'boards.json'
 
 
     openocd_root = Prompt.ask("Enter the OpenOCD scripts path")
@@ -116,6 +117,18 @@ def run_setup_tool():
     }
 
     resources[resource_name] = resource
+
+
+    config['path'].mkdir(exist_ok=True,parents=True)
+    config['locks'].mkdir(exist_ok=True,parents=True)
+
+
+    print(resources)
+    print(config)    
+
+    with open(config['board'].__str__(), 'w') as board_file:
+        json.dump(resources, board_file)
+
 
 def config_cli() -> argparse.Namespace:
     """
