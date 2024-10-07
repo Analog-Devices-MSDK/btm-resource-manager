@@ -47,6 +47,7 @@ import argparse
 import os
 import sys
 from typing import Dict
+from pathlib import Path
 
 # pylint: disable=redefined-builtin
 from rich import print
@@ -54,9 +55,43 @@ from rich import print
 # pylint: enable=redefined-builtin
 
 from btm_resource_manager import ResourceManager
-
+from rich.console import Console
+from rich.prompt import Prompt
 VERSION = "1.0.2"
 
+
+def run_setup_tool():
+    # Initialize console
+    console = Console()
+
+    home = Path.home()
+    app_name = 'resource_manager'
+
+    if os.name == 'nt':  # Windows
+        appdata_path = Path(os.getenv('APPDATA')) / app_name
+    elif os.name == 'posix':
+        if os.uname().sysname == 'Darwin':  # macOS
+            appdata_path = home / 'Library' / 'Application Support' / app_name
+        else:  # Linux
+            appdata_path = home / '.config' / app_name
+    else:
+        raise Exception("Unsupported operating system")
+
+    appdata_path.mkdir(parents=True, exist_ok=True)
+
+    # Prompt for inputs
+    base_directory = Prompt.ask(
+        "Enter the base directory to store stuff",
+        default=appdata_path.__str__
+    )
+
+
+    print(base_directory)
+
+    openocd_scripts_path = Prompt.ask("Enter the OpenOCD scripts path")
+    resource_name = Prompt.ask("Enter the name of the resource")
+    resource_serial_number = Prompt.ask("Enter the resource serial number")
+    resource_description = Prompt.ask("Enter a description of the resource")
 
 def config_cli() -> argparse.Namespace:
     """
@@ -191,6 +226,12 @@ def config_cli() -> argparse.Namespace:
         help="Display purgable resources",
     )
 
+    parser.add_argument(
+        "--configure",
+        action="store_true",
+        help="Configure tool setup",
+    )
+
     return parser.parse_args()
 
 
@@ -229,6 +270,10 @@ def main():
 
     args = config_cli()
 
+    if args.configure:
+        run_setup_tool()
+        print('Successfully configured resource manager! Create a new termial to reload environment variables')
+        return
     lock_resources = set(args.lock)
     unlock_resources = set(args.unlock)
 
