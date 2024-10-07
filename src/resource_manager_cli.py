@@ -62,7 +62,8 @@ VERSION = "1.0.2"
 
 def run_setup_tool():
     # Initialize console
-    console = Console()
+    config = {}
+    
 
     home = Path.home()
     app_name = 'resource_manager'
@@ -82,16 +83,36 @@ def run_setup_tool():
     # Prompt for inputs
     base_directory = Prompt.ask(
         "Enter the base directory to store stuff",
-        default=appdata_path.__str__
+        default=appdata_path.__str__()
     )
 
+    config['path'] = base_directory
+    config['locks'] = base_directory / 'locks'
+    config['board'] = base_directory / 'boards.json'
 
-    print(base_directory)
 
-    openocd_scripts_path = Prompt.ask("Enter the OpenOCD scripts path")
-    resource_name = Prompt.ask("Enter the name of the resource")
-    resource_serial_number = Prompt.ask("Enter the resource serial number")
-    resource_description = Prompt.ask("Enter a description of the resource")
+    openocd_root = Prompt.ask("Enter the OpenOCD scripts path")
+    openocd = Path(openocd_root)
+    while not openocd.exists() and not (openocd / 'scripts').exists():
+        openocd_root = Prompt.ask("Enter the OpenOCD scripts path")
+        openocd = Path(openocd_root)  
+
+
+    resources = {}
+    resource = {}
+
+
+    resource_name = Prompt.ask("Enter the name of your new board", default='board1')
+    resource['dap_sn'] = Prompt.ask("Enter connected debuggers serial number")
+    resource['desc'] = Prompt.ask("Board Description")
+    resource['target'] = Prompt.ask('Target Type', default='max32655')
+    resource['console_port'] = Prompt.ask("Console Port (Ex: COM4)")
+    resource['console_port'] = Prompt.ask("HCI Port (Ex: COM5)")
+    resource['ocdports'] = {
+        'gdb': 3550,
+        'tcl' : 5550,
+        'telnet': 6550
+    }
 
 def config_cli() -> argparse.Namespace:
     """
