@@ -101,8 +101,9 @@ def run_setup_tool():
     resources = {}
     resource = {}
 
-
-    resource_name = Prompt.ask("Enter the name of your new board", default='board1')
+    resource_name = ''
+    while not resource_name:
+        resource_name = Prompt.ask("Enter the name of your new board", default='board1')
     resource['dap_sn'] = Prompt.ask("Enter connected debuggers serial number")
     resource['desc'] = Prompt.ask("Board Description")
     resource['target'] = Prompt.ask('Target Type', default='max32655')
@@ -113,6 +114,8 @@ def run_setup_tool():
         'tcl' : 5550,
         'telnet': 6550
     }
+
+    resources[resource_name] = resource
 
 def config_cli() -> argparse.Namespace:
     """
