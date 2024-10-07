@@ -57,7 +57,7 @@ Description: Print out temperature on CI
 """
 import argparse
 
-from resource_manager.ci_temp_sensor import CiTempSensor, TempUnit
+from btm_resource_manager.ci_temp_sensor import CiTempSensor, TempUnit
 
 
 def main():
