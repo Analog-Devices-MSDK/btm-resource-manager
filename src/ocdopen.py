@@ -57,7 +57,6 @@ Description: ocdopen cli
 import argparse
 import os
 import subprocess
-
 from btm_resource_manager import ResourceManager
 
 
