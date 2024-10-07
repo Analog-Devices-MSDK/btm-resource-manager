@@ -66,7 +66,7 @@ from pathlib import Path
 from rich import print
 from rich.prompt import Prompt
 
-from resource_manager import ResourceManager
+from btm_resource_manager import ResourceManager
 
 # pylint: enable=redefined-builtin,import-error
 

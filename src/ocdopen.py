@@ -58,7 +58,7 @@ import argparse
 import os
 import subprocess
 
-from resource_manager import ResourceManager
+from btm_resource_manager import ResourceManager
 
 
 def main():

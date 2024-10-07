@@ -53,7 +53,7 @@ from rich import print
 
 # pylint: enable=redefined-builtin
 
-from resource_manager import ResourceManager
+from btm_resource_manager import ResourceManager
 
 VERSION = "1.0.2"
 
