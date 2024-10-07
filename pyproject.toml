@@ -38,6 +38,6 @@ citemp = "ci_temp:main"
 
 
 [project.urls]
-Homepage = "https://github.com/Analog-Devices-MSDK/btm-ci-scripts"
-Repository = "https://github.com/Analog-Devices-MSDK/btm-ci-scripts"
-"Bug Tracker" = "https://github.com/Analog-Devices-MSDK/btm-ci-scripts/issues"
+Homepage = "https://github.com/Analog-Devices-MSDK/btm-resource-manager"
+Repository = "https://github.com/Analog-Devices-MSDK/btm-resource-manager"
+"Bug Tracker" = "https://github.com/Analog-Devices-MSDK/btm-resource-manager/issues"
