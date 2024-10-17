@@ -120,7 +120,13 @@ def main():
 
     if elf == "":
         target_str = resource_manager.get_target(resource).lower()
-        elf = f"build/{target_str}.elf"
+        elf_upper = f"build/{target_str}.elf"
+        elf_lower = f"build/{target_str.lower()}.elf"
+        elf = elf_lower if os.path.exists(elf_lower) else elf_upper
+
+    print(elf)
+
+
 
     # Probably a better way.
     # This will block workflows if the path is messed up. So just bypass feature on CI machine

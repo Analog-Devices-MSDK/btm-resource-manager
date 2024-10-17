@@ -79,11 +79,11 @@ def run_setup_tool():
     else:
         raise Exception("Unsupported operating system")
 
-    appdata_path.mkdir(parents=True, exist_ok=True)
+    # appdata_path.mkdir(parents=True, exist_ok=True)
 
     # Prompt for inputs
     base_directory = Prompt.ask(
-        "Enter the base directory to store stuff",
+        "Enter the base directory to store configuration",
         default=appdata_path.__str__()
     )
 
@@ -119,15 +119,15 @@ def run_setup_tool():
     resources[resource_name] = resource
 
 
-    config['path'].mkdir(exist_ok=True,parents=True)
-    config['locks'].mkdir(exist_ok=True,parents=True)
+    # config['path'].mkdir(exist_ok=True,parents=True)
+    # config['locks'].mkdir(exist_ok=True,parents=True)
 
 
     print(resources)
     print(config)    
 
-    with open(config['board'].__str__(), 'w') as board_file:
-        json.dump(resources, board_file)
+    # with open(config['board'].__str__(), 'w') as board_file:
+    #     json.dump(resources, board_file)
 
 
 def config_cli() -> argparse.Namespace:

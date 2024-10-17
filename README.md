@@ -35,6 +35,27 @@ Example:
 
 - ocdports : Ports to flash on. If not specified the resource_manager will generate ports for you.
 
+### Finding ``dap_sn``
+
+There is no standard way to find the serial number of the debugger (``dap_sn``). There is one way I have found on both Linux and Windows that works well
+
+PYOCD is a Python based tool and API for debugging, programming, and exploring Arm Cortex microcontrollers.
+
+It can easily be installed via pip ``pip install pyocd``
+
+Once installed run the following command and observe the output.
+
+```bash
+
+pyocd list
+  #   Probe/Board        Unique ID                                          Target
+----------------------------------------------------------------------------------------
+  0   ARM CMSIS-DAP v1   040917029e99035800000000000000000000000097969906   ✔︎ max32630
+      MAX32630FTHR
+```
+
+The ``Unique ID`` entry is the dap_sn. Enter this into the dap_sn entry.
+
 ### Value usage
 
 Any value can be queried using the resource manager for use in workflows, actions, and test scripts.
@@ -199,20 +220,25 @@ Inside ``board_config.json``, create an entry like the one shown in  [Board Conf
 
 Replace MAXIM_PATH with the location of your MaximSDK installation.
 If you have a place where OpenOCD is then use that instead.
+
 Linux:
+Example inside your .bashrc or shell rc file.
 
 ```bash
-echo export OPENOCD_PATH="~/<MAXIM_PATH>/Tools/OpenOCD/scripts" >> ~/.bashrc
-echo export CI_BOARD_CONFIG="~/resource_configs/board_config.json" >> ~/.bashrc
-echo export RESOURCE_LOCK_DIR="~/resource_locks" >> ~/.bashrc
+export OPENOCD_PATH="~/<MAXIM_PATH>/Tools/OpenOCD/scripts"
+export CI_BOARD_CONFIG="~/.config/resource_manager/board_config.json"
+# Optional if you do not plan on locking 
+export RESOURCE_LOCK_DIR="~/.config/resource_manager/locks"
 ```
+
+Once entered open a new terminal or run ``source ~/.bashrc`` to see the environment variables load.
 
 Windows:
 
 ```powershell
 setx OPENOCD_PATH "C:\<MAXIM_PATH>\Tool\OpenOCD\scripts"
-setx CI_BOARD_CONFIG "C:\resource_configs\board_config.json"
-setx RESOURCE_LOCK_DIR "C:\resource_locks"
+setx CI_BOARD_CONFIG "C:\resource_manager\board_config.json"
+setx RESOURCE_LOCK_DIR "C:\resource_manager\locks"
 ```
 
 Start a new terminal and test your configuration by typing ``resource_manager -lu``. You should see an output similar to [this](#usage)
