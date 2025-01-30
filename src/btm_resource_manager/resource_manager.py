@@ -501,6 +501,22 @@ class ResourceManager:
         """
         return self.get_item_value(f"{resource}.dap_sn")
 
+    def get_dap_interface(self, resource: str) -> str:
+        """Get Dap interface as found in board config
+        
+        Parameters
+        ----------
+        resource : str
+            Resource name.
+
+        Returns
+        -------
+        str
+            Dap interface associated with resource.
+
+        """
+        return self.get_item_value(f"{resource}.dap_interface", default="cmsis-dap")
+
     def get_target(self, resource: str) -> str:
         """Get target chip from resource
 
@@ -765,6 +781,7 @@ class ResourceManager:
         ocdpath = self._get_ocdpath()
         target = self.get_target(resource_name)
         dapsn = self.get_dapsn(resource_name)
+        dap_interface = self.get_dap_interface(resource_name)
         gdb, telnet, tcl = self.get_ocdports(resource_name)
 
         command = [
@@ -772,7 +789,7 @@ class ResourceManager:
             "-s",
             ocdpath,
             "-f",
-            "interface/cmsis-dap.cfg",
+            f"interface/{dap_interface}.cfg",
             "-f",
             f"target/{target.lower()}.cfg",
             "-c",
@@ -807,13 +824,14 @@ class ResourceManager:
         ocdpath = self._get_ocdpath()
         target = self.get_target(resource_name)
         dapsn = self.get_dapsn(resource_name)
+        dap_interface = self.get_dap_interface(resource_name)
         gdb, telnet, tcl = self.get_ocdports(resource_name)
         common_command = [
             "openocd",
             "-s",
             ocdpath,
             "-f",
-            "interface/cmsis-dap.cfg",
+            f"interface/{dap_interface}.cfg",
             "-f",
             f"target/{target.lower()}.cfg",
             "-c",
@@ -864,6 +882,7 @@ class ResourceManager:
 
         ocdpath = os.getenv("OPENOCD_PATH")
         dapsn = self.get_dapsn(resource_name)
+        dap_interface = self.get_dap_interface(resource_name)
         gdb, telnet, tcl = self.get_ocdports(resource_name)
         target = self.get_target(resource_name).lower()
 
@@ -872,7 +891,7 @@ class ResourceManager:
             "-s",
             ocdpath,
             "-f",
-            "interface/cmsis-dap.cfg",
+            f"interface/{dap_interface}.cfg",
             "-f",
             f"target/{target}.cfg",
             "-c",
