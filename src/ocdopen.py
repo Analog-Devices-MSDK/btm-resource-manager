@@ -74,6 +74,7 @@ def main():
 
     resource_manager._is_ocd_capable(resource)
     dapsn = resource_manager.get_dapsn(resource)
+    dap_interface = resource_manager.get_dap_interface(resource)
     gdb, telnet, tcl = resource_manager.get_ocdports(resource)
     target = resource_manager.get_target(resource)
 
@@ -82,7 +83,7 @@ def main():
         "-s",
         ocdpath,
         "-f",
-        "interface/cmsis-dap.cfg",
+        f"interface/{dap_interface}.cfg",
         "-f",
         f"target/{target.lower()}.cfg",
         "-c",
